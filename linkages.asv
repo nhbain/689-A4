@@ -11,7 +11,6 @@ links = [];
 pins = [];
 sliders = [];
 particles = [];
-oscillation = false; %False by default
 switch scene
 	case 0
 		% Crank-rocker
@@ -131,14 +130,8 @@ while t < T
 	% Procedurally set the driver angle.
 	% Right now, the target angle is being linearly increased, but you may
 	% want to do something else.
+	links(driver).angleTarget = links(driver).angleTarget + dt*angVel;
     
-    if oscillation
-        target =(max_theta-min_theta)*-cos(w*t)/2 +(max_theta+min_theta)/2;
-    else
-        target = links(driver).angleTarget + dt*angVel;
-    end
-    
-    links(driver).angleTarget = target;
     
 	% Solve for linkage orientations and positions
 	[links,feasible] = solveLinkage(links,pins,sliders,opt);
