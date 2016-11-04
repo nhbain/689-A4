@@ -78,10 +78,196 @@ switch scene
 		particles(2).point = [2.5,-0.1]';
 	case 1
 		% Drag-link
+        % Bottom link. Height: .2, Length: 3.0, Angle: 0°
+		links(1).angle = 0; % rotation from the positive x-axis
+		links(1).pos = [-1 0]'; % position of the center of rotation
+		links(1).verts = [ % display vertices
+			 0.0  3.0  3.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		% Left link. Height: .2, Length: 5.0, Angle: 90°
+		links(2).angle = pi/2;
+		links(2).pos = [-1 0]';
+		links(2).verts = [
+			 0.0  5.0  5.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		% Right link. Height: .2, Length: 6.0, Angle: 90°
+		links(3).angle = pi/2;
+		links(3).pos = [1 0]';
+		links(3).verts = [
+			 0.0  6.0  6.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		% Top link. Height: .2, Length: 5.0, Angle: 0°
+		links(4).angle = 0;
+		links(4).pos = [-1 1]';
+		links(4).verts = [
+			 0.0  5.0  5.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		
+		% Which link is grounded?
+		grounded = 1;
+		% Which link is the driver?
+		% Note: the driver must be attached (with a pin) to the ground.
+		driver = 2;
+		
+		% Bottom-left
+		pins(1).linkA = 1;
+		pins(1).linkB = 2;
+		pins(1).pointA = [0,0]';
+		pins(1).pointB = [0,0]';
+		% Bottom-right
+		pins(2).linkA = 1;
+		pins(2).linkB = 3;
+		pins(2).pointA = [3,0]';
+		pins(2).pointB = [0,0]';
+		% Left-top
+		pins(3).linkA = 2;
+		pins(3).linkB = 4;
+		pins(3).pointA = [5,0]';
+		pins(3).pointB = [0,0]';
+		% Right-top
+		pins(4).linkA = 3;
+		pins(4).linkB = 4;
+		pins(4).pointA = [6,0]';
+		pins(4).pointB = [5,0]';
+		
+		% List of tracer particles for display
+		particles(1).link = 4; % which link?
+		particles(1).point = [0.0,0.0]'; % tracer particle point in local coords
+		particles(2).link = 4;
+		particles(2).point = [5,0]';
 	case 2
 		% Double-rocker
+        oscillation = true;
+        max_theta = pi/2 + 0.315;
+        min_theta =  pi/3 - .23;
+        
+        % Bottom link. Height: .2, Length: 2.0, Angle: 0°
+		links(1).angle = 0; % rotation from the positive x-axis
+		links(1).pos = [-1 0]'; % position of the center of rotation
+		links(1).verts = [ % display vertices
+			 0.0  2.0  2.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		% Left link. Height: .2, Length: 4.0, Angle: 60°
+		links(2).angle = pi/3;
+		links(2).pos = [-1 0]';
+		links(2).verts = [
+			 0.0  4.0  4.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		% Right link. Height: .2, Length: 4.0, Angle: 90°
+		links(3).angle = pi/2;
+		links(3).pos = [1 0]';
+		links(3).verts = [
+			 0.0  4.0  4.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		% Top link. Height: .2, Length: 1.0, Angle: 0°
+		links(4).angle = 0;
+		links(4).pos = [-1 1]';
+		links(4).verts = [
+			 0.0  1.0  1.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		
+		% Which link is grounded?
+		grounded = 1;
+		% Which link is the driver?
+		% Note: the driver must be attached (with a pin) to the ground.
+		driver = 2;
+		
+		% Bottom-left
+		pins(1).linkA = 1;
+		pins(1).linkB = 2;
+		pins(1).pointA = [0,0]';
+		pins(1).pointB = [0,0]';
+		% Bottom-right
+		pins(2).linkA = 1;
+		pins(2).linkB = 3;
+		pins(2).pointA = [2,0]';
+		pins(2).pointB = [0,0]';
+		% Left-top
+		pins(3).linkA = 2;
+		pins(3).linkB = 4;
+		pins(3).pointA = [4,0]';
+		pins(3).pointB = [0,0]';
+		% Right-top
+		pins(4).linkA = 3;
+		pins(4).linkB = 4;
+		pins(4).pointA = [4,0]';
+		pins(4).pointB = [1.0,0]';
+		
+		% List of tracer particles for display
+		particles(1).link = 4; % which link?
+		particles(1).point = [0,0]'; % tracer particle point in local coords
+		particles(2).link = 4;
+		particles(2).point = [1,0]';
 	case 3
-		% Hoekens
+		% Bottom link. Height: .2, Length: 3.0, Angle: 0°
+		links(1).angle = 0; % rotation from the positive x-axis
+		links(1).pos = [-1 0]'; % position of the center of rotation
+		links(1).verts = [ % display vertices
+			 0.0  2.0  2.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		% Left link. Height: .2, Length: 5.0, Angle: 90°
+		links(2).angle = pi/2;
+		links(2).pos = [-1 0]';
+		links(2).verts = [
+			 0.0  1.0  1.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		% Right link. Height: .2, Length: 6.0, Angle: 90°
+		links(3).angle = pi/2;
+		links(3).pos = [1 0]';
+		links(3).verts = [
+			 0.0  2.5  2.5  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		% Top link. Height: .2, Length: 5.0, Angle: 0°
+		links(4).angle = 0;
+		links(4).pos = [-1 1]';
+		links(4).verts = [
+			 0.0  5.0  5.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+		
+		% Which link is grounded?
+		grounded = 1;
+		% Which link is the driver?
+		% Note: the driver must be attached (with a pin) to the ground.
+		driver = 2;
+		
+		% Bottom-left
+		pins(1).linkA = 1;
+		pins(1).linkB = 2;
+		pins(1).pointA = [0,0]';
+		pins(1).pointB = [0,0]';
+		% Bottom-right
+		pins(2).linkA = 1;
+		pins(2).linkB = 3;
+		pins(2).pointA = [2,0]';
+		pins(2).pointB = [0,0]';
+		% Left-top
+		pins(3).linkA = 2;
+		pins(3).linkB = 4;
+		pins(3).pointA = [1,0]';
+		pins(3).pointB = [0,0]';
+		% Right-top
+		pins(4).linkA = 3;
+		pins(4).linkB = 4;
+		pins(4).pointA = [2.5,0]';
+		pins(4).pointB = [2.5,0]';
+		
+		% List of tracer particles for display
+		particles(1).link = 4; % which link?
+		particles(1).point = [0.0,0.0]'; % tracer particle point in local coords
+		particles(2).link = 4;
+		particles(2).point = [5,0]';
 	case 4
 		% Peaucellier-Lipkin
 	case 5
