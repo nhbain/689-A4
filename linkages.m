@@ -512,7 +512,7 @@ switch scene
         
         % Stationary link. Height: .2, Length: 38.79226727, Angle: 0°
 		links(1).angle = 0; % rotation from the positive x-axis
-		links(1).pos = [0 0]'; % position of the center of rotation
+		links(1).pos = [-38 -7.8]'; % position of the center of rotation
 		links(1).verts = [ % display vertices
 			 0.0  38.0  38.0
 			 0.0 0.0  7.8
@@ -544,7 +544,7 @@ switch scene
         
         % Leg link 3 red1. Height: .2, Length: 41.5, Angle: 0°
 		links(5).angle = 0;
-		links(5).pos = [0 0]';
+		links(5).pos = [-80 25]';
 		links(5).verts = [
 			 0.0  41.5  41.5  0.0
 			-0.1 -0.1  0.1  0.1
@@ -559,7 +559,7 @@ switch scene
 			];
         
         % Leg link 5 red3. Height: .2, Length: 40.1, Angle: 0°
-		links(7).angle = 0;
+		links(7).angle = pi;
 		links(7).pos = [0 0]';
 		links(7).verts = [
 			 0.0  40.1  40.1  0.0
@@ -568,7 +568,7 @@ switch scene
         
         % Leg link 6 purple. Height: .2, Length: 39.4, Angle: 0°
 		links(8).angle = 0;
-		links(8).pos = [0 0]';
+		links(8).pos = [-76 -20]';
 		links(8).verts = [
 			 0.0  39.4  39.4  0.0
 			-0.1 -0.1  0.1  0.1
@@ -576,7 +576,7 @@ switch scene
         
         % Leg link 7 brown. Height: .2, Length: 39.3, Angle: 0°
 		links(9).angle = 0;
-		links(9).pos = [0 0]';
+		links(9).pos = [0 -7.8]';
 		links(9).verts = [
 			 0.0  39.3  39.3  0.0
 			-0.1 -0.1  0.1  0.1
@@ -592,7 +592,7 @@ switch scene
         
         % Leg link 9 blue2. Height: .2, Length: 65.7, Angle: 0°
 		links(11).angle = 0;
-		links(11).pos = [0 0]';
+		links(11).pos = [-76 -20]';
 		links(11).verts = [
 			 0.0  65.7  65.7  0.0
 			-0.1 -0.1  0.1  0.1

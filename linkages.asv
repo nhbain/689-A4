@@ -207,32 +207,32 @@ switch scene
 		particles(2).link = 4;
 		particles(2).point = [1,0]';
 	case 3
-		% Bottom link. Height: .2, Length: 3.0, Angle: 0°
+		% Bottom link. Height: .2, Length: 4.0, Angle: 0°
 		links(1).angle = 0; % rotation from the positive x-axis
 		links(1).pos = [-1 0]'; % position of the center of rotation
 		links(1).verts = [ % display vertices
-			 0.0  2.0  2.0  0.0
+			 0.0  4.0  4.0  0.0
 			-0.1 -0.1  0.1  0.1
 			];
-		% Left link. Height: .2, Length: 5.0, Angle: 90°
+		% Left link. Height: .2, Length: 2.0, Angle: 90°
 		links(2).angle = pi/2;
 		links(2).pos = [-1 0]';
 		links(2).verts = [
-			 0.0  1.0  1.0  0.0
+			 0.0  2.0  2.0  0.0
 			-0.1 -0.1  0.1  0.1
 			];
-		% Right link. Height: .2, Length: 6.0, Angle: 90°
+		% Right link. Height: .2, Length: 5.0, Angle: 90°
 		links(3).angle = pi/2;
 		links(3).pos = [1 0]';
 		links(3).verts = [
-			 0.0  2.5  2.5  0.0
+			 0.0  5.0  5.0  0.0
 			-0.1 -0.1  0.1  0.1
 			];
-		% Top link. Height: .2, Length: 5.0, Angle: 0°
+		% Top link. Height: .2, Length: 10.0, Angle: 0°
 		links(4).angle = 0;
 		links(4).pos = [-1 1]';
 		links(4).verts = [
-			 0.0  5.0  5.0  0.0
+			 0.0  10.0  10.0  0.0
 			-0.1 -0.1  0.1  0.1
 			];
 		
@@ -250,96 +250,489 @@ switch scene
 		% Bottom-right
 		pins(2).linkA = 1;
 		pins(2).linkB = 3;
-		pins(2).pointA = [2,0]';
+		pins(2).pointA = [4,0]';
 		pins(2).pointB = [0,0]';
 		% Left-top
 		pins(3).linkA = 2;
 		pins(3).linkB = 4;
-		pins(3).pointA = [1,0]';
+		pins(3).pointA = [2,0]';
 		pins(3).pointB = [0,0]';
 		% Right-top
 		pins(4).linkA = 3;
 		pins(4).linkB = 4;
-		pins(4).pointA = [2.5,0]';
-		pins(4).pointB = [2.5,0]';
+		pins(4).pointA = [5,0]';
+		pins(4).pointB = [5,0]';
 		
 		% List of tracer particles for display
 		particles(1).link = 4; % which link?
 		particles(1).point = [0.0,0.0]'; % tracer particle point in local coords
 		particles(2).link = 4;
-		particles(2).point = [5,0]';
+		particles(2).point = [10,0]';
 	case 4
 		% Peaucellier-Lipkin
-        % Double-rocker
-        oscillation = true;
-        max_theta = 1.445467724;
-        min_theta =  0.3897599472;
         
-        % Bottom link. Height: .2, Length: 2.0, Angle: 0°
+        oscillation = true;
+        max_theta = pi/3;
+        min_theta = -pi/3;
+        
+        % Calculate lengths
+        a = 2; % side length of the rhombus
+        b = 2; % length of driver + stationary link
+        c = sqrt((b*(b+(a*sqrt(2)))) + (a^2));
+        d = .5*(a*sqrt(2));
+        
+        % Stationary link. Height: .2, Length: 2.0, Angle: 0°
 		links(1).angle = 0; % rotation from the positive x-axis
 		links(1).pos = [-1 0]'; % position of the center of rotation
 		links(1).verts = [ % display vertices
-			 0.0  5.0  5.0  0.0
+			 0.0  b/2  b/2  0.0
 			-0.1 -0.1  0.1  0.1
 			];
-		% Left link. Height: .2, Length: 4.0, Angle: 60°
-		links(2).angle = pi/3;
-		links(2).pos = [-1 0]';
+        
+        % Driver link. Height: .2, Length: 2.0, Angle: 0°
+		links(2).angle = 0;
+		links(2).pos = [(b/2 - 1) 0]';
 		links(2).verts = [
-			 0.0  4.0  4.0  0.0
+			 0.0  b/2  b/2  0.0
 			-0.1 -0.1  0.1  0.1
 			];
-		% Right link. Height: .2, Length: 4.0, Angle: 90°
-		links(3).angle = pi/2;
-		links(3).pos = [1 0]';
+        
+        % Rhombus orientation correlates with the driver being at max_theta
+        % Rhombus link 1 (left side). Height: .2, Length: a, Angle: 45°
+		links(3).angle = pi/4;
+		links(3).pos = [b-1 0]';
 		links(3).verts = [
-			 0.0  4.0  4.0  0.0
+			 0.0  a  a  0.0
 			-0.1 -0.1  0.1  0.1
 			];
-		% Top link. Height: .2, Length: 1.0, Angle: 0°
-		links(4).angle = 0;
-		links(4).pos = [-1 1]';
+        
+        % Rhombus link 2 (bottom). Height: .2, Length: a, Angle: 45°
+		links(4).angle = -pi/4;
+		links(4).pos = [b-1 0]';
 		links(4).verts = [
-			 0.0  2.0  2.0  0.0
+			 0.0  a  a  0.0
 			-0.1 -0.1  0.1  0.1
 			];
-		
-		% Which link is grounded?
+        
+        % Rhombus link 3 (right side). Height: .2, Length: a, Angle: 45°
+		links(5).angle = pi/4;
+		links(5).pos = [(b-1+d) -d]';
+		links(5).verts = [
+			 0.0  a  a  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Rhombus link 4 (top). Height: .2, Length: a, Angle: -45°
+		links(6).angle = -pi/4;
+		links(6).pos = [(b-1+d) d]';
+		links(6).verts = [
+			 0.0  a  a  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Long link 1. Height: .2, Length: c, Angle: 30°
+		links(7).angle = pi/6;
+		links(7).pos = [-1 0]';
+		links(7).verts = [
+			 0.0  c  c  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Long link 2. Height: .2, Length: c, Angle: -30°
+		links(8).angle = -pi/6;
+		links(8).pos = [-1 0]';
+		links(8).verts = [
+			 0.0  c  c  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Which link is grounded?
 		grounded = 1;
 		% Which link is the driver?
 		% Note: the driver must be attached (with a pin) to the ground.
 		driver = 2;
+        
+        % Stationary-Long link 1 
+		pins(1).linkA = 1;
+		pins(1).linkB = 7;
+		pins(1).pointA = [0,0]';
+		pins(1).pointB = [0,0]';
+        % Stationary-Long link 2 
+		pins(2).linkA = 1;
+		pins(2).linkB = 8;
+		pins(2).pointA = [0,0]';
+		pins(2).pointB = [0,0]';
+		% Stationary-Driver
+		pins(3).linkA = 1;
+		pins(3).linkB = 2;
+		pins(3).pointA = [b/2,0]';
+		pins(3).pointB = [0,0]';
+		% Driver-Rhombus link 1 (left)
+		pins(4).linkA = 2;
+		pins(4).linkB = 3;
+		pins(4).pointA = [b/2,0]';
+		pins(4).pointB = [0,0]';
+		% Driver-Rhombus link 2 (bottom)
+		pins(5).linkA = 2;
+		pins(5).linkB = 4;
+		pins(5).pointA = [b/2,0]';
+		pins(5).pointB = [0,0]';
+        % Rhombus link 1(left)-Rhombus link 4 (top)
+		pins(6).linkA = 3;
+		pins(6).linkB = 6;
+		pins(6).pointA = [a,0]';
+		pins(6).pointB = [0,0]';
+        % Rhombus link 2(bottom)-Rhombus link 3 (right)
+		pins(7).linkA = 4;
+		pins(7).linkB = 5;
+		pins(7).pointA = [a,0]';
+		pins(7).pointB = [0,0]';
+        % Rhombus link 4(top)-Rhombus link 3 (right)
+		pins(8).linkA = 6;
+		pins(8).linkB = 5;
+		pins(8).pointA = [a,0]';
+		pins(8).pointB = [a,0]';
+        % Long link 1-Rhombus link 1 (left)
+		pins(9).linkA = 7;
+		pins(9).linkB = 3;
+		pins(9).pointA = [c,0]';
+		pins(9).pointB = [a,0]';
+        % Long link 2-Rhombus link 2 (bottom)
+		pins(10).linkA = 8;
+		pins(10).linkB = 4;
+		pins(10).pointA = [c,0]';
+		pins(10).pointB = [a,0]';
 		
-		% Bottom-left
+		% List of tracer particles for display
+		particles(1).link = 5; % which link?
+		particles(1).point = [a,0.0]'; % tracer particle point in local coords
+		particles(2).link = 2;
+		particles(2).point = [b/2,0]';
+       
+	case 5
+		% Klann
+        
+        % Stationary base.
+		links(1).angle = 0; % rotation from the positive x-axis
+		links(1).pos = [0 0]'; % position of the center of rotation
+		links(1).verts = [ % display vertices
+			 -266.16  0.0  -266.16
+			-130 0.0  61.45
+			];
+        
+        % Driver. Height: .2, Length: 110 , Angle: -90°
+		links(2).angle = -pi/2;
+		links(2).pos = [0 0]';
+		links(2).verts = [
+			 0.0  110  110  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        
+        % Brace 1 (top). Height: .2, Length: 182 , Angle: 0°
+		links(3).angle = 0;
+		links(3).pos = [0 0]';
+		links(3).verts = [
+			 0.0  182  182  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Brace 2 (bottom). Height: .2, Length: 130 , Angle: 0°
+		links(4).angle = 0;
+		links(4).pos = [0 0]';
+		links(4).verts = [
+			 0.0  130  130  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg part 1.
+		links(5).angle = 0;
+		links(5).pos = [0 0]';
+		links(5).verts = [
+			 0.0  288  288  0.0  -216.65  -216.65
+			-0.1  -0.1  0.1  0.1  48.30  48.10
+			];
+        
+        % Leg part 2.
+		links(6).angle = 0;
+		links(6).pos = [0 0]';
+		links(6).verts = [
+			 0.0  265  734.57  734.57  265 0.0
+			-0.1 -0.1  139.9  140.1  0.1 0.1
+			];
+        
+        % Which link is grounded?
+		grounded = 1;
+		% Which link is the driver?
+		% Note: the driver must be attached (with a pin) to the ground.
+		driver = 2;
+        
+        % Stationary-Driver 
 		pins(1).linkA = 1;
 		pins(1).linkB = 2;
 		pins(1).pointA = [0,0]';
 		pins(1).pointB = [0,0]';
-		% Bottom-right
+        % Stationary-Brace 1 (top) 
 		pins(2).linkA = 1;
 		pins(2).linkB = 3;
-		pins(2).pointA = [5,0]';
+		pins(2).pointA = [-266.16,61.45]';
 		pins(2).pointB = [0,0]';
-		% Left-top
-		pins(3).linkA = 2;
+		% Stationary-Brace 2 (bottom)
+		pins(3).linkA = 1;
 		pins(3).linkB = 4;
-		pins(3).pointA = [4,0]';
+		pins(3).pointA = [-266.16,-130]';
 		pins(3).pointB = [0,0]';
-		% Right-top
-		pins(4).linkA = 3;
-		pins(4).linkB = 4;
-		pins(4).pointA = [4,0]';
-		pins(4).pointB = [2,0]';
+ 		% Driver-Leg part 1
+ 		pins(4).linkA = 2;
+ 		pins(4).linkB = 5;
+ 		pins(4).pointA = [110,0]';
+ 		pins(4).pointB = [288,0]';
+        % Brace 1 (top)- Leg part 2
+ 		pins(5).linkA = 3;
+ 		pins(5).linkB = 6;
+ 		pins(5).pointA = [182,0]';
+ 		pins(5).pointB = [0,0]';
+ 		% Brace 2 (bottom)-Leg part 1
+ 		pins(6).linkA = 4;
+ 		pins(6).linkB = 5;
+ 		pins(6).pointA = [130,0]';
+ 		pins(6).pointB = [0,0]';
+        % Leg part 1-Leg part 2
+ 		pins(7).linkA = 5;
+ 		pins(7).linkB = 6;
+ 		pins(7).pointA = [-216.65,38.53]';
+ 		pins(7).pointB = [265,0]';
+        
+        % List of tracer particles for display
+		particles(1).link = 6; % which link?
+		particles(1).point = [734.57,140]'; % tracer particle point in local coords
+        
+	case 6
+		% Jansen's linkage
+        
+        % Stationary link. Height: .2, Length: 38.79226727, Angle: 0°
+		links(1).angle = 0; % rotation from the positive x-axis
+		links(1).pos = [-38 -7.8]'; % position of the center of rotation
+		links(1).verts = [ % display vertices
+			 0.0  38.0  38.0
+			 0.0 0.0  7.8
+			];
+        
+        % Driver link. Height: .2, Length: 15.0, Angle: 0°
+		links(2).angle = 0;
+		links(2).pos = [0 0]';
+		links(2).verts = [
+			 0.0  15.0  15.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 1 green. Height: .2, Length: 50.0, Angle: 0°
+		links(3).angle = 0;
+		links(3).pos = [0 0]';
+		links(3).verts = [
+			 0.0  50.0  50.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 2 orange. Height: .2, Length: 61.9, Angle: 0°
+		links(4).angle = 0;
+		links(4).pos = [0 0]';
+		links(4).verts = [
+			 0.0  61.9  61.9  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 3 red1. Height: .2, Length: 41.5, Angle: 0°
+		links(5).angle = 0;
+		links(5).pos = [-76 25]';
+		links(5).verts = [
+			 0.0  41.5  41.5  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 4 red2. Height: .2, Length: 55.8, Angle: 0°
+		links(6).angle = 0;
+		links(6).pos = [0 0]';
+		links(6).verts = [
+			 0.0  55.8  55.8  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 5 red3. Height: .2, Length: 40.1, Angle: 0°
+		links(7).angle = 0;
+		links(7).pos = [0 0]';
+		links(7).verts = [
+			 0.0  40.1  40.1  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 6 purple. Height: .2, Length: 39.4, Angle: 0°
+		links(8).angle = 0;
+		links(8).pos = [0 0]';
+		links(8).verts = [
+			 0.0  39.4  39.4  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 7 brown. Height: .2, Length: 39.3, Angle: 0°
+		links(9).angle = 0;
+		links(9).pos = [0 0]';
+		links(9).verts = [
+			 0.0  39.3  39.3  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 8 blue1. Height: .2, Length: 36.7, Angle: 0°
+		links(10).angle = 0;
+		links(10).pos = [0 0]';
+		links(10).verts = [
+			 0.0  36.7  36.7  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 9 blue2. Height: .2, Length: 65.7, Angle: 0°
+		links(11).angle = 0;
+		links(11).pos = [-76 0]';
+		links(11).verts = [
+			 0.0  65.7  65.7  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Leg link 10 blue3. Height: .2, Length: 49.0, Angle: 0°
+		links(12).angle = 0;
+		links(12).pos = [0 0]';
+		links(12).verts = [
+			 0.0  49.0  49.0  0.0
+			-0.1 -0.1  0.1  0.1
+			];
+        
+        % Which link is grounded?
+		grounded = 1;
+		% Which link is the driver?
+		% Note: the driver must be attached (with a pin) to the ground.
+		driver = 2;
+        
+        % Stationary-Leg link 3
+		pins(1).linkA = 1;
+		pins(1).linkB = 5;
+		pins(1).pointA = [0,0]';
+		pins(1).pointB = [0,0]';
+        % Stationary-Leg link 5 
+		pins(2).linkA = 1;
+		pins(2).linkB = 7;
+		pins(2).pointA = [0,0]';
+		pins(2).pointB = [0,0]';
+		% Stationary-Leg link 7
+		pins(3).linkA = 1;
+		pins(3).linkB = 9;
+		pins(3).pointA = [0,0]';
+		pins(3).pointB = [0,0]';
+        
+		% Stationary-Driver
+		pins(4).linkA = 1;
+		pins(4).linkB = 2;
+		pins(4).pointA = [38.0,7.8]';
+		pins(4).pointB = [0,0]';
+        
+		% Driver-Leg link 1
+		pins(5).linkA = 2;
+		pins(5).linkB = 3;
+		pins(5).pointA = [15.0,0]';
+		pins(5).pointB = [0,0]';
+        % Driver-Leg link 2
+		pins(6).linkA = 2;
+		pins(6).linkB = 4;
+		pins(6).pointA = [15.0,0]';
+		pins(6).pointB = [0,0]';
+        
+        % Leg link 1-Leg link 3
+		pins(7).linkA = 3;
+		pins(7).linkB = 5;
+		pins(7).pointA = [50.0,0]';
+		pins(7).pointB = [41.5,0]';
+        % Leg link 1-Leg link 4
+		pins(8).linkA = 3;
+		pins(8).linkB = 6;
+		pins(8).pointA = [50.0,0]';
+		pins(8).pointB = [0,0]';
+        % Leg link 3-Leg link 4
+		pins(9).linkA = 5;
+		pins(9).linkB = 6;
+		pins(9).pointA = [41.5,0]';
+		pins(9).pointB = [0,0]';
+        
+        
+        % Leg link 4-Leg link 5
+		pins(10).linkA = 6;
+		pins(10).linkB = 7;
+		pins(10).pointA = [55.8,0]';
+		pins(10).pointB = [40.1,0]';
+        % Leg link 4-Leg link 6
+		pins(11).linkA = 6;
+		pins(11).linkB = 8;
+		pins(11).pointA = [55.8,0]';
+		pins(11).pointB = [0,0]';
+        % Leg link 5-Leg link 6
+		pins(12).linkA = 7;
+		pins(12).linkB = 8;
+		pins(12).pointA = [40.1,0]';
+		pins(12).pointB = [0,0]';
+        
+        
+        % Leg link 6-Leg link 8
+		pins(13).linkA = 8;
+		pins(13).linkB = 10;
+		pins(13).pointA = [39.4,0]';
+		pins(13).pointB = [0,0]';
+        % Leg link 6-Leg link 9
+		pins(14).linkA = 8;
+		pins(14).linkB = 11;
+		pins(14).pointA = [39.4,0]';
+		pins(14).pointB = [0,0]';
+        
+        % Leg link 2-Leg link 7
+		pins(15).linkA = 4;
+		pins(15).linkB = 9;
+		pins(15).pointA = [61.9,0]';
+		pins(15).pointB = [39.3,0]';
+        % Leg link 2-Leg link 8
+		pins(16).linkA = 4;
+		pins(16).linkB = 10;
+		pins(16).pointA = [61.9,0]';
+		pins(16).pointB = [36.7,0]';
+        % Leg link 2-Leg link 10
+		pins(17).linkA = 4;
+		pins(17).linkB = 12;
+		pins(17).pointA = [61.9,0]';
+		pins(17).pointB = [0,0]';
+        % Leg link 8-Leg link 10
+		pins(18).linkA = 10;
+		pins(18).linkB = 12;
+		pins(18).pointA = [36.7,0]';
+		pins(18).pointB = [0,0]';
+        % Leg link 7-Leg link 8
+        pins(19).linkA = 9;
+		pins(19).linkB = 10;
+		pins(19).pointA = [39.3,0]';
+		pins(19).pointB = [36.7,0]';
+        % Leg link 7-Leg link 10
+        pins(20).linkA = 9;
+		pins(20).linkB = 12;
+		pins(20).pointA = [39.3,0]';
+		pins(20).pointB = [0,0]';
+        
+        % Leg link 9-Leg link 10
+		pins(21).linkA = 11;
+		pins(21).linkB = 12;
+		pins(21).pointA = [65.7,0]';
+		pins(21).pointB = [49.0,0]';
 		
 		% List of tracer particles for display
-		particles(1).link = 4; % which link?
-		particles(1).point = [0,0]'; % tracer particle point in local coords
-		particles(2).link = 4;
-		particles(2).point = [1,0]';
-	case 5
-		% Klann
-	case 6
-		% Another linkage
+		particles(1).link = 12; % which link?
+		particles(1).point = [49.0,0.0]'; % tracer particle point in local coords
+		particles(2).link = 2;
+		particles(2).point = [15,0]';
+        
 	case 10
 		% Extra credit!
 end
